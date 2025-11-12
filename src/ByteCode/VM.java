@@ -3,13 +3,10 @@ package ByteCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-// IMPORTAR O SCANNER
 import java.util.Scanner;
 
-/**
- * A Máquina Virtual (VM) que executa o bytecode.
- * Agora com suporte para Strings e Input.
- */
+//A Máquina Virtual (VM) que executa o bytecode.
+
 public class VM {
 
     private Chunk chunk;
@@ -163,9 +160,6 @@ public class VM {
 
     // --- Funções Auxiliares da VM ---
 
-    /**
-     * ATUALIZADO: O método binaryOp agora suporta concatenação de strings.
-     */
     private void binaryOp(String op) {
         Object b = stack.pop();
         Object a = stack.pop();
@@ -214,9 +208,6 @@ public class VM {
         }
     }
 
-    // ... (O resto dos métodos auxiliares (readShort, runtimeError,
-    //      stringify, isTruthy, isEqual) estão iguais à versão anterior) ...
-
     private int readShort() {
         int high = chunk.code.get(ip++) & 0xFF;
         int low = chunk.code.get(ip++) & 0xFF;
@@ -254,7 +245,6 @@ public class VM {
     // --- Casos de Switch que omiti por brevidade ---
 
     private void copyPasteHelper() {
-        // Este método não faz nada, é só para eu não esquecer
         // de colar o código que estava igual
         OpCode op = OpCode.OP_NIL;
         switch(op) {

@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
-    // ... (campos e métodos compile(), getCurrentLine() estão iguais) ...
     private Chunk currentChunk;
 
     private int getCurrentLine(Token token) {
@@ -37,16 +36,10 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     // --- VISITORS DE COMANDO (Stmt) ---
-    // (visitIfStmt, visitWhileStmt, visitVarStmt, visitPrintStmt,
-    //  visitExpressionStmt, visitBlockStmt estão iguais)
-
-    // ... (visitIfStmt, visitWhileStmt, visitVarStmt, etc. ... )
 
     @Override
     public Void visitInputStmt(Stmt.Input stmt) {
         int line = getCurrentLine(stmt.name);
-
-        // 1. Emite o opcode para pedir o input.
         //    A VM colocará o valor lido no topo da pilha.
         currentChunk.write(OpCode.OP_INPUT, line);
 
@@ -54,16 +47,15 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         int constIndex = currentChunk.addConstant(stmt.name.lexeme);
         currentChunk.write(OpCode.OP_SET_GLOBAL, line);
         currentChunk.write(constIndex, line);
+        //    e o OP_SET_GLOBAL apenas faz 'peek()'.
+        currentChunk.write(OpCode.OP_POP, line);
 
         return null;
     }
 
-    // ... (Resto do ficheiro: visitIfStmt, visitWhileStmt, visitBlockStmt,
-    //      todos os visitExpr, e os helpers de JUMP estão iguais) ...
 
 
     // --- VISITORS DE EXPRESSÃO (Expr) ---
-    // ... (iguais aos da versão anterior) ...
 
     // --- Métodos de Visitor por implementar (Funções) ---
     @Override public Void visitCallExpr(Expr.Call expr) { /* TODO */ return null; }
@@ -73,10 +65,7 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     @Override public Void visitSwitchStmt(Stmt.Switch stmt) { /* TODO */ return null; }
 
     // --- Métodos Auxiliares para Saltos (Jumps) ---
-    // ... (emitJump, patchJump, emitLoop estão iguais) ...
 
-
-    // --- Implementações Anteriores (para manter o ficheiro completo) ---
 
     @Override
     public Void visitIfStmt(Stmt.If stmt) {

@@ -55,7 +55,6 @@ public class Scanner {
     private void scanToken() {
         char c = advance(); // Avança para o próximo caractere e retorna ele
         switch (c) {
-
             case ':': addToken(TokenType.COLON); break;         // Dois pontos
             case ' ': case '\r': case '\t': break;              // Espaços em branco são ignorados
             case '\n': line++; break;                           // Quebra de linha: incrementa o contador de linhas
