@@ -1,0 +1,75 @@
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+
+// Imports das fases antigas (Léxica, Sintática)
+import Lexica.Scanner;
+import Lexica.Token;
+import Sintatica.Parser;
+import Sintatica.Stmt;
+import Utils.AstHtml;
+
+// Imports das NOVAS fases (Bytecode VM)
+// (Remover: import Semantica.Interpreter;)
+import ByteCode.Compiler;
+import ByteCode.Chunk;
+import ByteCode.VM;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Usar o caminho fixo, como solicitado, com a extensão corrigida.
+        // (O original era 'programa.cpqp')
+        String caminhoPrograma = "C:\\Users\\natna\\Downloads\\CodesPqp-master\\CodesPqp-master\\src\\programa.cpqp";
+
+        String caminhoHtml = "arvore.html";
+
+        try {
+            // 0. Ler o ficheiro
+            String programa = new String(Files.readAllBytes(Paths.get(caminhoPrograma)));
+
+            // 1. Análise Léxica (Scanner)
+            Scanner scanner = new Scanner(programa);
+            List<Token> tokens = scanner.scanTokens();
+            System.out.println("Análise léxica concluída: " + tokens.size() + " tokens.");
+
+            // 2. Análise Sintática (Parser -> AST)
+            Parser parser = new Parser(tokens);
+            List<Stmt> statements = parser.parse();
+
+            if (statements == null || statements.isEmpty()) {
+                System.err.println("Nenhum comando válido encontrado no código.");
+                return;
+            }
+            System.out.println("Análise sintática concluída. (" + statements.size() + " statements)");
+
+            // 3. (Opcional) Gerar visualização da AST
+            AstHtml printer = new AstHtml();
+            printer.gerarHtml(statements, caminhoHtml);
+            System.out.println("Arquivo HTML da AST salvo em: " + caminhoHtml);
+
+            // 4. NOVO: Compilação (AST -> Bytecode)
+            Compiler compiler = new Compiler();
+            Chunk chunk = compiler.compile(statements);
+
+            if (chunk == null) {
+                System.err.println("Falha na compilação.");
+                return;
+            }
+            System.out.println("Compilação para bytecode concluída.");
+
+            // 5. NOVO: Execução (VM lê o Bytecode)
+            // (Isto substitui a chamada ao 'interpreter.interpret(statements)')
+            VM vm = new VM();
+            System.out.println("\n--------- EXECUÇÃO DA VM ---------");
+            vm.interpret(chunk);
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo do programa: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro inesperado: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
