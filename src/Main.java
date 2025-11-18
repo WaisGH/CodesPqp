@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Usar o caminho fixo
-        String caminhoPrograma = "C:\\Users\\natna\\Downloads\\CodesPqp-master\\CodesPqp-master\\src\\programa.cpqp";
+        String caminhoPrograma = "C:\\Users\\Usuario\\Downloads\\CodesPqp-master\\CodesPqp-master\\src\\programa.cpqp";
 
         String caminhoHtml = "arvore.html";
 
