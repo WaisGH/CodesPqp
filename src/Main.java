@@ -10,6 +10,7 @@ import Utils.AstHtml;
 import ByteCode.Compiler;
 import ByteCode.Chunk;
 import ByteCode.VM;
+import ByteCode.Debug;
 
 public class Main {
     public static void main(String[] args) {
@@ -52,6 +53,12 @@ public class Main {
                 return;
             }
             System.out.println("Compilação para bytecode concluída.");
+
+            System.out.println("\n--------- BYTECODE GERADO ---------");
+            Debug.disassembleChunk(chunk, "Código do Programa");
+            System.out.println("-----------------------------------\n");
+
+            //Execução (VM lê o Bytecode)
             VM vm = new VM();
             System.out.println("\n--------- EXECUÇÃO DA VM ---------");
             vm.interpret(chunk);
