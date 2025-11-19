@@ -1,26 +1,53 @@
-ESCREVEAI "Teste de Concatenação de Strings";
-VAR nome = "Codes";
-ESCREVEAI "Olá, " + nome + " PQP!";
+VAR a = 3;
+VAR b = 7;
+VAR c = 0;
 
-VAR numcomostring = "100";
-ESCREVEAI numcomostring + 50;
+// Operações básicas de aritmética
+c = a + b;
+ESCREVEAI "Soma de a + b: " + c;
+c = b - a;
+ESCREVEAI "Subtração de b - a: " + c;
+c = a * b;
+ESCREVEAI "Multiplicação de a * b: " + c;
+c = b / a;
+ESCREVEAI "Divisão de b / a: " + c;
 
-ESCREVEAI "Teste de Input (LEIA)";
+// Operadores lógicos
+VAR menor = (a < b);
+ESCREVEAI "a < b? " + menor;
+VAR maior = (a > b);
+ESCREVEAI "a > b? " + maior;
+VAR igual = (a == b);
+ESCREVEAI "a == b? " + igual;
+VAR diferente = (a != b);
+ESCREVEAI "a != b? " + diferente;
+VAR negacao = !(b < a);
+ESCREVEAI "Negação de b < a: " + negacao;
 
-ESCREVEAI "Qual é o seu nome?";
-VAR seu_nome;
-LEIA seu_nome;
-ESCREVEAI "Bem-vindo, " + seu_nome + "!";
+// Condicional e escopo de variável
+SE (c >= 10) {
+    VAR resultado = c * 2;
+    ESCREVEAI "Resultado no escopo condicional: " + resultado;
+}
+ESCREVEAI "Fim do bloco condicional.";
 
-ESCREVEAI "Digite um número (ex: 5):";
-VAR num1;
-LEIA num1;
+// Laço com incremento otimizado e break
+VAR i = 1;
+VOLTAINFINITA (i <= 5) {
+    ESCREVEAI "Valor de i no laço: " + i;
+    i++;
+    SE (i == 4) {
+        ESCREVEAI "Break acionado!";
+        PAREI;
+    }
+}
 
-ESCREVEAI "Digite outro número (ex: 8):";
-VAR num2;
-LEIA num2;
+// Teste de decremento otimizado
+ESCREVEAI "Teste decremento:";
+VAR y = 6;
+y--;
+ESCREVEAI "Valor de y após y--: " + y;
 
-ESCREVEAI "A soma dos seus números é:";
-ESCREVEAI num1 + num2;
-
-ESCREVEAI "FIM DO TESTE";
+// Expressão aritmética complexa
+VAR exp = (a * b + y) / (i + 1);
+ESCREVEAI "Expressão complexa: " + exp;

@@ -1,22 +1,20 @@
 package Lexica;
 
 public enum TokenType {
-
     // Palavras-chave
     VAR, FUN, RETURN, PRINT, FOR, WHILE,
     SWITCH, CASE, DEFAULT, COLON,
     INT, FLOAT, BOOL, IF, ELSE,
     TRUE, FALSE, NIL, EOF,
-    INPUT, BREAK,
+    INPUT, BREAK, //
 
     // Identificadores/literais
     IDENTIFIER, NUMBER, STRING,
 
-    // Operadores/pontuação
+    // Operadores
     EQUAL, PLUS, MINUS, STAR, SLASH,
     LESS, GREATER, EQUALEQUAL, BANG, BANGEQUAL,
     LEFTPAREN, RIGHTPAREN, LEFTBRACE, RIGHTBRACE, COMMA, SEMICOLON, LEFT_BRACKET, RIGHT_BRACKET,
     LESSEQUAL, GREATEREQUAL, PERCENT,
-    DOT
+    DOT, INCREMENTO, DECREMENTO, AND, OR //
 }
-

@@ -1,27 +1,26 @@
 package Sintatica;
 
 import Lexica.Token;
-
 import java.util.List;
 
-// Representa uma expressão na árvore sintática abstrata (AST).
 public abstract class Expr {
 
-    // Interface Visitor: define métodos para cada tipo de expressão.
+    // Interface Visitor atualizada com todos os métodos necessários
     public interface Visitor<R> {
-        R visitAssignExpr(Assign expr);        // Para atribuição
-        R visitBinaryExpr(Binary expr);        // Para operações binárias (+, -, etc)
-        R visitCallExpr(Call expr);            // Para chamada de função/metodo
-        R visitGroupingExpr(Grouping expr);    // Para expressões agrupadas (parenteses)
-        R visitLiteralExpr(Literal expr);      // Para valores literais
-        R visitUnaryExpr(Unary expr);          // Para operações unárias (-, !, etc)
-        R visitVariableExpr(Variable expr);    // Para uso de variáveis
+        R visitAssignExpr(Assign expr);
+        R visitBinaryExpr(Binary expr);
+        R visitCallExpr(Call expr);
+        R visitGroupingExpr(Grouping expr);
+        R visitLiteralExpr(Literal expr);
+        R visitUnaryExpr(Unary expr);
+        R visitVariableExpr(Variable expr);
+        // Estes dois métodos estavam faltando e causavam o erro:
+        R visitIncrementoExpr(Incremento expr);
+        R visitDecrementoExpr(Decremento expr);
     }
 
-    // Cada expressão sabe como "aceitar" um visitante.
     public abstract <R> R accept(Visitor<R> visitor);
 
-    // Expressão de atribuição: x = 2
     public static class Assign extends Expr {
         public final Token name;
         public final Expr value;
@@ -29,12 +28,12 @@ public abstract class Expr {
             this.name = name;
             this.value = value;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitAssignExpr(this);
         }
     }
 
-    // Expressão binária: x + y
     public static class Binary extends Expr {
         public final Expr left;
         public final Token operator;
@@ -44,12 +43,12 @@ public abstract class Expr {
             this.operator = operator;
             this.right = right;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitBinaryExpr(this);
         }
     }
 
-    // Chamada de função: f(x, y)
     public static class Call extends Expr {
         public final Expr callee;
         public final Token paren;
@@ -59,34 +58,34 @@ public abstract class Expr {
             this.paren = paren;
             this.arguments = arguments;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitCallExpr(this);
         }
     }
 
-    // Agrupamento: (x + y)
     public static class Grouping extends Expr {
         public final Expr expression;
         public Grouping(Expr expression) {
             this.expression = expression;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitGroupingExpr(this);
         }
     }
 
-    // Valor literal: 10, "texto", true
     public static class Literal extends Expr {
         public final Object value;
         public Literal(Object value) {
             this.value = value;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitLiteralExpr(this);
         }
     }
 
-    // Operação unária: -x, !flag
     public static class Unary extends Expr {
         public final Token operator;
         public final Expr right;
@@ -94,20 +93,52 @@ public abstract class Expr {
             this.operator = operator;
             this.right = right;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitUnaryExpr(this);
         }
     }
 
-    // Uso de variável: x
     public static class Variable extends Expr {
         public final Token name;
         public Variable(Token name) {
             this.name = name;
         }
+        @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitVariableExpr(this);
         }
     }
 
+    // --- NOVAS CLASSES PARA CORRIGIR O ERRO ---
+
+    public static class Incremento extends Expr {
+        public final Token name;
+        public final Token operator;
+        public final boolean prefix; // true para ++i, false para i++
+        public Incremento(Token name, Token operator, boolean prefix) {
+            this.name = name;
+            this.operator = operator;
+            this.prefix = prefix;
+        }
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitIncrementoExpr(this);
+        }
+    }
+
+    public static class Decremento extends Expr {
+        public final Token name;
+        public final Token operator;
+        public final boolean prefix; // true para --i, false para i--
+        public Decremento(Token name, Token operator, boolean prefix) {
+            this.name = name;
+            this.operator = operator;
+            this.prefix = prefix;
+        }
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitDecrementoExpr(this);
+        }
+    }
 }

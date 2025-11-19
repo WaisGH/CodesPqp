@@ -8,7 +8,8 @@ import java.util.List;
 
 public class AstHtml implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
-    // EXPRESSÕES
+    // --- EXPRESSÕES ---
+
     @Override
     public String visitBinaryExpr(Expr.Binary expr) {
         return tag("Binária (" + expr.operator.lexeme + ")",
@@ -47,7 +48,22 @@ public class AstHtml implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return tag("Chamada de função", expr.callee.accept(this) + args);
     }
 
-    // COMANDOS
+    // --- NOVOS MÉTODOS (Correção do Erro) ---
+
+    @Override
+    public String visitIncrementoExpr(Expr.Incremento expr) {
+        String tipo = expr.prefix ? "Pré-incremento" : "Pós-incremento";
+        return tag(tipo + ": " + expr.name.lexeme, "");
+    }
+
+    @Override
+    public String visitDecrementoExpr(Expr.Decremento expr) {
+        String tipo = expr.prefix ? "Pré-decremento" : "Pós-decremento";
+        return tag(tipo + ": " + expr.name.lexeme, "");
+    }
+
+    // --- COMANDOS ---
+
     @Override
     public String visitPrintStmt(Stmt.Print stmt) {
         return tag("Print", stmt.expression.accept(this));
@@ -117,6 +133,8 @@ public class AstHtml implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return tag("Input: " + stmt.name.lexeme, "");
     }
 
+    // --- Helpers ---
+
     // Helper para HTML indentado básico
     private String tag(String title, String children) {
         return "<li><b>" + title + "</b>" +
@@ -132,8 +150,13 @@ public class AstHtml implements Expr.Visitor<String>, Stmt.Visitor<String> {
         html.append("li{margin-bottom:6px;font-size:16px;} b{font-weight:600;color:#222;}");
         html.append("</style></head>");
         html.append("<body><h2>Árvore Sintática (AST)</h2><ul>");
-        for (Stmt s : statements) html.append(s.accept(this));
+
+        for (Stmt s : statements) {
+            html.append(s.accept(this));
+        }
+
         html.append("</ul></body></html>");
+
         try (FileWriter file = new FileWriter(caminhoArquivo)) {
             file.write(html.toString());
             System.out.println("AST inicial (indentada) gerada em: " + caminhoArquivo);

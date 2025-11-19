@@ -10,6 +10,8 @@ public enum Precedence {
     FACTOR,       // Multiplicação, divisão e resto (ex: *, /, %)
     UNARY,        // Operadores unários (ex: !, -)
     CALL,         // Chamada de função/metodo e acesso
-    PRIMARY       // Literais, identificadores, expressões agrupadas
+    PRIMARY,// Literais, identificadores, expressões agrupadas
+    AND,
+    OR
 }
 
