@@ -42,15 +42,15 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     public Void visitInputStmt(Stmt.Input stmt) {
         int line = getCurrentLine(stmt.name);
 
-        // 1. Emite o opcode que lê do console (a VM põe o valor na pilha)
+        //Emite o opcode que lê do console (a VM põe o valor na pilha)
         currentChunk.write(OpCode.OP_INPUT, line);
 
-        // 2. Define o nome da variável global onde o valor será salvo
+        //Define o nome da variável global onde o valor será salvo
         int constIndex = currentChunk.addConstant(stmt.name.lexeme);
         currentChunk.write(OpCode.OP_SET_GLOBAL, line);
         currentChunk.write(constIndex, line);
 
-        // 3. OP_SET_GLOBAL mantém o valor na pilha, então fazemos POP para limpar
+        //OP_SET_GLOBAL mantém o valor na pilha, então fazemos POP para limpar
         currentChunk.write(OpCode.OP_POP, line);
 
         return null;
@@ -142,19 +142,19 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         int line = getCurrentLine(expr.name);
         int constIndex = currentChunk.addConstant(expr.name.lexeme);
 
-        // 1. Carrega o valor atual da variável
+        //Carrega o valor atual da variável
         currentChunk.write(OpCode.OP_GET_GLOBAL, line);
         currentChunk.write(constIndex, line);
 
-        // 2. Carrega o valor 1
+        //Carrega o valor 1
         currentChunk.write(OpCode.OP_CONSTANT, line);
         int oneIdx = currentChunk.addConstant(1);
         currentChunk.write(oneIdx, line);
 
-        // 3. Soma
+        //Soma
         currentChunk.write(OpCode.OP_ADD, line);
 
-        // 4. Salva de volta na variável
+        //Salva de volta na variável
         currentChunk.write(OpCode.OP_SET_GLOBAL, line);
         currentChunk.write(constIndex, line);
 
@@ -166,19 +166,19 @@ public class Compiler implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         int line = getCurrentLine(expr.name);
         int constIndex = currentChunk.addConstant(expr.name.lexeme);
 
-        // 1. Carrega variável
+        //Carrega variável
         currentChunk.write(OpCode.OP_GET_GLOBAL, line);
         currentChunk.write(constIndex, line);
 
-        // 2. Carrega 1
+        //Carrega 1
         currentChunk.write(OpCode.OP_CONSTANT, line);
         int oneIdx = currentChunk.addConstant(1);
         currentChunk.write(oneIdx, line);
 
-        // 3. Subtrai
+        //Subtrai
         currentChunk.write(OpCode.OP_SUBTRACT, line);
 
-        // 4. Salva
+        //Salva
         currentChunk.write(OpCode.OP_SET_GLOBAL, line);
         currentChunk.write(constIndex, line);
 
