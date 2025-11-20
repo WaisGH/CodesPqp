@@ -14,7 +14,6 @@ public abstract class Expr {
         R visitLiteralExpr(Literal expr);
         R visitUnaryExpr(Unary expr);
         R visitVariableExpr(Variable expr);
-        // Estes dois métodos estavam faltando e causavam o erro:
         R visitIncrementoExpr(Incremento expr);
         R visitDecrementoExpr(Decremento expr);
     }
@@ -110,7 +109,7 @@ public abstract class Expr {
         }
     }
 
-    // --- NOVAS CLASSES PARA CORRIGIR O ERRO ---
+
 
     public static class Incremento extends Expr {
         public final Token name;
