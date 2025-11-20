@@ -6,7 +6,7 @@ import Lexica.TokenType;
 import java.util.List;
 import java.util.ArrayList;
 
-// Sintatica.Parser transformeert tokens in commando's en expressies (AST).
+// O Parser transforma tokens em comandos e expressões (AST)
 public class Parser {
     private final List<Token> tokens;
     private int current = 0;
@@ -28,12 +28,12 @@ public class Parser {
     private static final ParseRule[] rules = new ParseRule[TokenType.values().length];
 
     static {
-        // 1. Initialiseer ALLE regels met een standaardwaarde om NullPointerException te voorkomen
+        //Inicialize TODAS as linhas com um valor padrão para evitar NullPointerException
         for (int i = 0; i < rules.length; i++) {
             rules[i] = new ParseRule(null, null, Precedence.NONE);
         }
 
-        // 2. Specifieke regels overschrijven de standaardwaarden
+        //Regras específicas substituem os valores padrão.
         rules[TokenType.LEFTPAREN.ordinal()]    = new ParseRule(Parser::grouping, Parser::call, Precedence.CALL);
         rules[TokenType.RIGHTPAREN.ordinal()]   = new ParseRule(null, null, Precedence.NONE);
         rules[TokenType.LEFTBRACE.ordinal()]    = new ParseRule(null, null, Precedence.NONE);
@@ -64,7 +64,7 @@ public class Parser {
         rules[TokenType.AND.ordinal()]          = new ParseRule(null, Parser::binary, Precedence.AND);
         rules[TokenType.OR.ordinal()]           = new ParseRule(null, Parser::binary, Precedence.OR);
 
-        // Regels voor Incremento/Decremento (Cruciaal voor je loop error)
+        // Regras incrementais/decrementais (cruciais para o seu erro de loop)
         rules[TokenType.INCREMENTO.ordinal()]   = new ParseRule(Parser::incremento, Parser::incrementoInfix, Precedence.CALL);
         rules[TokenType.DECREMENTO.ordinal()]   = new ParseRule(Parser::decremento, Parser::decrementoInfix, Precedence.CALL);
     }
@@ -230,7 +230,7 @@ public class Parser {
     private Expr parsePrecedence(Precedence precedence) {
         ParseRule prefixRule = getRule(peek().type);
         if (prefixRule == null || prefixRule.prefix == null) {
-            // Error recovery for unexpected tokens
+            // Recuperação de erros para tokens inesperados
             throw new RuntimeException("Esperava expressão, obtido " + peek().lexeme);
         }
         advance();
@@ -368,7 +368,7 @@ public class Parser {
         return peek().type == TokenType.EOF;
     }
 
-    // Deze methode is nu veilig omdat 'rules' volledig is geïnitialiseerd
+    // Este método agora é seguro porque 'rules' está totalmente inicializado.
     private static ParseRule getRule(TokenType type) {
         return rules[type.ordinal()];
     }
